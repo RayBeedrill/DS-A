@@ -1,40 +1,96 @@
-var sLinkedList = function() {
-    this.list = []
-    
-    this.getList = () => {
-        return this.list
+var Node = function(data) {
+    this.value = data
+    this.next = null
+}
+
+var List = function() {
+    this.head = null
+    this.tail = null
+    this.amount = 0
+}
+
+List.prototype.add = function (data) {
+    var node = new Node(data)
+    if(!this.head) {
+        this.head = node
+        this.tail = node
+    } else {
+        this.tail.next = node
+        this.tail = node
+    }
+    this.amount++
+}
+
+List.prototype.contains = function (value) {
+    var n = this.head
+    for(let i = 0; i < this.amount && n.value != value; i++){
+        n = n.next
+    }
+    if(!n) {
+        return false
+    }
+    return true
+}
+
+List.prototype.delete = function (value) {
+    var n = this.head
+    if(!n) {
+        return false
     }
 
-    this.add = (val) => {
-        if(!this.list.length) {
-            let el = {
-                head: null,
-                tail: null,
-                value: val
-            }
-            this.list.push(el)
+    if(n.value == value) {
+        if(!this.head.next.next && this.head.value == this.tail.value) {
+            delete this.tail
+            delete this.head
+            this.amount--
         } else {
-            let prevNode = this.list.length - 1
-            let nextNode = this.list.length
-            delete this.list[prevNode].tail
-            this.list[prevNode].link = nextNode
-            let el = {
-                value: val,
-                tail:null
-            } 
-            this.list.push(el)
+            this.head = this.head.next
         }
+        this.amount--
+        return true
+    }
+
+    while(n.next && n.next.value != value){
+        n = n.next
+    }
+    
+    if(n.next) {        
+        if(!n.next.next) {
+            this.tail = n
+        }
+        n.next = n.next.next
+        
+        this.amount--
+        return true
+    }
+
+    return false
+
+}
+
+List.prototype.traverse = function (callback) {
+    var n = this.head
+    while(n) {
+        n.value = callback(n.value)
+        n = n.next
     }
 }
 
-var list = new sLinkedList();
-list.add(1);
-list.add(3);
-list.add(5);
-list.add(6);
-list.add(7);
-list.add(8);
-list.add(9105);
-list.add(25);
+List.prototype.reverseTraverse = function (callback) {
 
-console.log(list.getList())
+}
+
+var linkList = new List()
+linkList.add(1)
+linkList.add(2)
+linkList.add(3)
+linkList.add(4)
+linkList.add(4)
+linkList.add(5)
+
+linkList.delete(4)
+linkList.traverse((node)=>{
+    return node * 2
+})
+console.log(linkList)
+
