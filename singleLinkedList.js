@@ -23,7 +23,7 @@ List.prototype.add = function (data) {
 
 List.prototype.contains = function (value) {
     var n = this.head
-    for(let i = 0; i < this.amount && n.value != value; i++){
+    while(n && n.value != value) {
         n = n.next
     }
     if(!n) {
@@ -39,7 +39,7 @@ List.prototype.delete = function (value) {
     }
 
     if(n.value == value) {
-        if(!this.head.next.next && this.head.value == this.tail.value) {
+        if(this.head == this.tail) {
             delete this.tail
             delete this.head
             this.amount--
@@ -55,7 +55,7 @@ List.prototype.delete = function (value) {
     }
     
     if(n.next) {        
-        if(!n.next.next) {
+        if(n.next == this.tail) {
             this.tail = n
         }
         n.next = n.next.next
@@ -71,26 +71,38 @@ List.prototype.delete = function (value) {
 List.prototype.traverse = function (callback) {
     var n = this.head
     while(n) {
-        n.value = callback(n.value)
+        callback(n)
         n = n.next
     }
 }
 
 List.prototype.reverseTraverse = function (callback) {
-
+    if(this.tail) {
+        var curr = this.tail
+        while (curr != this.head) {
+            var prev = this.head
+            while(prev.next != curr) {
+                prev = prev.next
+            }
+            callback(curr)
+            curr = prev
+        }
+        callback(curr)
+    }
 }
 
-var linkList = new List()
-linkList.add(1)
-linkList.add(2)
-linkList.add(3)
-linkList.add(4)
-linkList.add(4)
-linkList.add(5)
+var list = new List()
 
-linkList.delete(4)
-linkList.traverse((node)=>{
-    return node * 2
-})
-console.log(linkList)
+list.add(1)
+list.add(2)
+list.add(3)
+list.add(4)
+list.add(5)
+list.delete(5)
 
+var call = function(node){
+   console.log(node.value)
+}
+
+list.reverseTraverse(call)
+console.log(list)
