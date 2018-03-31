@@ -24,6 +24,17 @@ DoubleList.prototype.add = function(data) {
     this.amount++
 }
 
+DoubleList.prototype.contains = function(value) {
+  var n = this.head;
+  while (n && n.value != value) {
+    n = n.next;
+  }
+  if (!n) {
+    return false;
+  }
+  return true;
+};
+
 DoubleList.prototype.delete = function (value) {
     if(!this.head) {
         return false
