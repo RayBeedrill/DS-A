@@ -1,11 +1,11 @@
-var Node = function(data) {
+var Node = function (data) {
     this.value = data
     this.next = null
 }
 
-var List = function() {
+var List = function () {
     this.head = null
-    this.tail = null
+    this.tail = nulls
     this.amount = 0
 }
 
@@ -100,7 +100,7 @@ list.add(4)
 list.add(5)
 list.delete(5)
 
-var call = function(node){
+var call = function (node){
    console.log(node.value)
 }
 
