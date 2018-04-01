@@ -65,12 +65,12 @@ BSTree.prototype.findNode = function(root, value) {
 
 BSTree.prototype.findParent = function (root, value) { 
     if(root.value == value) {
-        return delete root.value
+        return 
     }
 
     if(value < root.value) {
         if(!root.leftSubTree) {
-            return null
+            return
         } else if(root.leftSubTree.value == value) {
             return root
         } else {
@@ -101,7 +101,7 @@ BSTree.prototype.delete = function(value) {
         return false
     }
 
-    var parent = this.findParent(value)
+    var parent = this.findParent(this.rootNode, value)
     if (this.length == 1) {
       delete this.rootNode;
     } else if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
@@ -137,10 +137,9 @@ BSTree.prototype.delete = function(value) {
 
 var tree = new BSTree()
 
-tree.add(2)
-tree.add(1)
-tree.add(3)
-tree.add(4)
-tree.add(5)
-tree.add(6)
+tree.add(23)
+tree.add(14)
+tree.add(31)
+tree.add(7)
+tree.add(9)
 
