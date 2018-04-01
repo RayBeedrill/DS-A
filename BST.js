@@ -65,19 +65,25 @@ BSTree.prototype.findNode = function(root, value) {
 
 BSTree.prototype.findParent = function (root, value) { 
     if(root.value == value) {
-        return 
+        return root
     }
 
-    if(value < root.value) {
-        if(!root.leftSubTree) {
-            return
-        } else if(root.leftSubTree.value == value) {
-            return root
+    if (value < root.value) {
+        if (!root.leftSubTree) {
+            return;
+        } else if (root.leftSubTree.value == value) {
+            return root;
         } else {
-            return this.findParent(root.leftSubTree, value)
+            return this.findParent(root.leftSubTree, value);
         }
     } else {
-        return this.findParent(root.rightSubTree, value)
+        if (!root.rightSubTree) {
+            return;
+        } else if (root.rightSubTree.value == value) {
+            return root;
+        } else {
+            return this.findParent(root.rightSubTree, value);
+        }
     }
 }
     
@@ -96,15 +102,24 @@ BSTree.prototype.findMax = function(value) {
 }
 
 BSTree.prototype.delete = function(value) {
-    var nodeToRemove = this.findNode(value)
+    var nodeToRemove = this.findNode(this.rootNode, value)
+    var parent = this.findParent(this.rootNode, value)
+    
     if(!nodeToRemove) {
         return false
     }
 
-    var parent = this.findParent(this.rootNode, value)
     if (this.length == 1) {
       delete this.rootNode;
-    } else if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
+      this.length--
+      return true
+    }
+
+    if (this.rootNode == parent && value == parent.value) {
+        return false;
+    }
+
+    if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
       if (nodeToRemove.value < parent.value) {
         delete parent.leftSubTree;
       } else {
