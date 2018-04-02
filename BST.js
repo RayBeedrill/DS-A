@@ -150,18 +150,44 @@ BSTree.prototype.delete = function(value) {
     return true
 }
 
+BSTree.prototype.preorder = function(root, callback) {
+    if(root) {
+        callback(root)
+        this.preoder(root.leftSubTree, callback)
+        this.preoder(root.rightSubTree, callback)
+    }
+}
+
+BSTree.prototype.postorder = function (root, callback) {
+    if (root) {
+        this.postorder(root.leftSubTree, callback)
+        this.postorder(root.rightSubTree, callback)
+        callback(root)
+    }
+}
+
+BSTree.prototype.inorder = function (root, callback) {
+    if (root) {
+        this.inorder(root.leftSubTree, callback)
+        callback(root)
+        this.inorder(root.rightSubTree, callback)
+    }
+}
+
+
+
 var tree = new BSTree()
 
-tree.add(100)
+/* tree.add(100)
 tree.add(90)
 tree.add(110)
 tree.add(80)
 tree.add(95)
 tree.add(100)
 tree.add(115)
-/* 
+ */
  tree.add(23)
  tree.add(14)
  tree.add(31)
  tree.add(7)
- tree.add(9) */
+ tree.add(9) 
