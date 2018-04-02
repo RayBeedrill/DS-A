@@ -134,12 +134,12 @@ BSTree.prototype.delete = function(value) {
         parent.rightSubTree = nodeToRemove.leftSubTree;
       }
     } else {
-        var largestValue = nodeToRemove.rightSubTree
+        var largestValue = nodeToRemove.leftSubTree
         while(largestValue.rightSubTree) {
             largestValue = largestValue.rightSubTree
         }
         var parent = this.findParent(this.rootNode, largestValue.value);
-        delete parent.rightSubTree
+        nodeToRemove.leftSubTree = largestValue.leftSubTree
         nodeToRemove.value = largestValue.value
     }
     this.length--
@@ -148,9 +148,10 @@ BSTree.prototype.delete = function(value) {
 
 var tree = new BSTree()
 
-tree.add(23)
-tree.add(14)
-tree.add(31)
-tree.add(7)
-tree.add(9)
-
+tree.add(100)
+tree.add(90)
+tree.add(110)
+tree.add(80)
+tree.add(95)
+tree.add(100)
+tree.add(115)
