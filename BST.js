@@ -65,12 +65,12 @@ BSTree.prototype.findNode = function(root, value) {
 
 BSTree.prototype.findParent = function (root, value) { 
     if(root.value == value) {
-        return root
+        return 
     }
 
     if (value < root.value) {
         if (!root.leftSubTree) {
-            return;
+            return 
         } else if (root.leftSubTree.value == value) {
             return root;
         } else {
@@ -78,7 +78,7 @@ BSTree.prototype.findParent = function (root, value) {
         }
     } else {
         if (!root.rightSubTree) {
-            return;
+            return
         } else if (root.rightSubTree.value == value) {
             return root;
         } else {
@@ -109,17 +109,13 @@ BSTree.prototype.delete = function(value) {
         return false
     }
 
+    
+
     if (this.length == 1) {
       delete this.rootNode;
       this.length--
       return true
-    }
-
-    if (this.rootNode == parent && value == parent.value) {
-        return false;
-    }
-
-    if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
+    } else if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
       if (nodeToRemove.value < parent.value) {
         delete parent.leftSubTree;
       } else {
@@ -138,12 +134,12 @@ BSTree.prototype.delete = function(value) {
         parent.rightSubTree = nodeToRemove.leftSubTree;
       }
     } else {
-        var largestValue = nodeToRemove.leftSubTree
+        var largestValue = nodeToRemove.rightSubTree
         while(largestValue.rightSubTree) {
             largestValue = largestValue.rightSubTree
         }
-
-        delete this.findParent(largestValue.value).rightSubTree
+        var parent = this.findParent(this.rootNode, largestValue.value);
+        delete parent.rightSubTree
         nodeToRemove.value = largestValue.value
     }
     this.length--
