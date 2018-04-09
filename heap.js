@@ -16,4 +16,25 @@ Heap.prototype.minHeapify = function () {
     }
 }
 
+
+Heap.prototype.delete = function() {
+    this.values.shift()
+    this.minHeapify()
+}
+
+Heap.prototype.contains = function (value) {
+    for(var i = 0; i < this.values.length; i++){
+        if(this.values[i] == value) {
+            return true
+        }
+    }
+    return false
+}
+
 var heap = new Heap()
+
+heap.add(1)
+heap.add(3)
+heap.add(9)
+heap.add(12)
+heap.add(13)
