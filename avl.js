@@ -151,9 +151,11 @@ AvlTree.prototype.leftRotation = function(node) {
     if(!node.rightSubTree) {
         return false
     }
-    var right = node.rightSubTree
-    node.rightSubTree = right.leftSubTree
-    right.left = node
+    var parent = this.findParent(this.rootNode, node.value)
+    var right = node.rightSubTree //6
+    parent.rightSubTree = right
+    node.rightSubTree = right.leftSubTree // null
+    right.leftSubTree = node
     return true
 }
 
@@ -161,7 +163,9 @@ AvlTree.prototype.rightRotation = function(node) {
     if (!node.leftSubTree) {
         return false;
     }
+    var parent = this.findParent(this.rootNode, node.value)
     var left = node.leftSubTree
+    parent.leftSubTree = left
     node.leftSubTree = left.rightSubTree
     left.rightSubTree = node
     return true
@@ -182,9 +186,16 @@ AvlTree.prototype.findHeight = function (node) {
     if (!node.leftSubTree && !node.rightSubTree) {
       return 1;
     } else {
+      if (node.leftSubTree && !node.rightSubTree) {
+        return this.findHeight(node.leftSubTree) + 1
+      }
+      if (!node.leftSubTree && node.rightSubTree) {
+        return this.findHeight(node.rightSubTree) + 1
+      }
       return Math.max(this.findHeight(node.leftSubTree), this.findHeight(node.rightSubTree)) + 1
     }
   }
+  return 0
 }
 
 AvlTree.prototype.balanceCheck = function(current) {
@@ -249,8 +260,11 @@ tree.add(95)
 tree.add(100)
 tree.add(115)
  */
-tree.add(23);
-tree.add(14);
-tree.add(31);
+tree.add(4);
+tree.add(2);
+tree.add(5);
+tree.add(3);
+tree.add(1);
+tree.add(6);
 tree.add(7);
-tree.add(9);
+tree.add(8);
