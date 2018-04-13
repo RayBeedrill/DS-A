@@ -9,31 +9,6 @@ var AvlTree = function() {
   this.length = 0;
 };
 
-AvlTree.prototype.insertNode = function(current, value) {
-  var node = new avlNode(value);
-  if (value < current.value) {
-    if (!current.leftSubTree) {
-      current.leftSubTree = node;
-    } else {
-      this.insertNode(current.leftSubTree, value);
-    }
-  } else {
-    if (!current.rightSubTree) {
-      current.rightSubTree = node;
-    } else {
-      this.insertNode(current.rightSubTree, value);
-    }
-  }
-};
-
-AvlTree.prototype.add = function(value) {
-  if (!this.rootNode) {
-    this.rootNode = new avlNode(value);
-  } else {
-    this.insertNode(this.rootNode, value);
-  }
-  this.length++;
-};
 
 AvlTree.prototype.contains = function(root, value) {
   if (!root) {
@@ -202,9 +177,65 @@ AvlTree.prototype.rightAndLeftRotation = function(node) {
     this.leftRotation(node);
 }
 
-AvlTree.prototype.balanceCheck = function(node) {
-
+AvlTree.prototype.findHeight = function (node) {
+  if(node) {
+    if (!node.leftSubTree && !node.rightSubTree) {
+      return 1;
+    } else {
+      return Math.max(this.findHeight(node.leftSubTree), this.findHeight(node.rightSubTree)) + 1
+    }
+  }
 }
+
+AvlTree.prototype.balanceCheck = function(current) {
+    if(!current.leftSubTree && !current.rightSubTree){
+      current.height = -1
+    } else {
+      current.height = this.findHeight(current)
+    }
+    if (this.findHeight(current.leftSubTree) - this.findHeight(current.rightSubTree) > 1) {
+      if (this.findHeight(current.leftSubTree.leftSubTree) - this.findHeight(current.leftSubTree.rightSubTree) < 0) {
+        this.rightRotation(current)
+      } else {
+        this.leftAndRightRotation(current)
+      }
+    } else if (this.findHeight(current.leftSubTree) - this.findHeight(current.rightSubTree) < -1) {
+      if (this.findHeight(current.rightSubTree.leftSubTree) - this.findHeight(current.rightSubTree.rightSubTree) < 0) {
+        this.leftRotation(current)
+      } else {
+        this.rightAndLeftRotation(current)
+      }
+    }
+}
+
+AvlTree.prototype.insertNode = function (current, value) {
+  var node = new avlNode(value);
+  if (value < current.value) {
+    if (!current.leftSubTree) {
+      current.leftSubTree = node;
+    } else {
+      this.insertNode(current.leftSubTree, value);
+    }
+  } else {
+    if (!current.rightSubTree) {
+      current.rightSubTree = node;
+    } else {
+      this.insertNode(current.rightSubTree, value);
+    }
+  }
+  this.balanceCheck(current)
+};
+
+AvlTree.prototype.add = function (value) {
+  if (!this.rootNode) {
+    this.rootNode = new avlNode(value);
+  } else {
+    this.insertNode(this.rootNode, value);
+  }
+  this.length++;
+};
+
+
 
 
 
