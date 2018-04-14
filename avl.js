@@ -40,7 +40,7 @@ AvlTree.prototype.findNode = function(root, value) {
 
 AvlTree.prototype.findParent = function(root, value) {
   if (root.value == value) {
-    return;
+    return 
   }
 
   if (value < root.value) {
@@ -153,7 +153,11 @@ AvlTree.prototype.leftRotation = function(node) {
     }
     var parent = this.findParent(this.rootNode, node.value)
     var right = node.rightSubTree //6
-    parent.rightSubTree = right
+    if(parent) {
+      parent.rightSubTree = right;    
+    } else {
+      this.rootNode = right
+    }
     node.rightSubTree = right.leftSubTree // null
     right.leftSubTree = node
     return true
@@ -165,7 +169,11 @@ AvlTree.prototype.rightRotation = function(node) {
     }
     var parent = this.findParent(this.rootNode, node.value)
     var left = node.leftSubTree
-    parent.leftSubTree = left
+    if(parent) {
+      parent.leftSubTree = left
+    } else {
+      this.rootNode = left
+    }
     node.leftSubTree = left.rightSubTree
     left.rightSubTree = node
     return true
@@ -260,11 +268,11 @@ tree.add(95)
 tree.add(100)
 tree.add(115)
  */
-tree.add(4);
-tree.add(2);
-tree.add(5);
-tree.add(3);
 tree.add(1);
+tree.add(2);
+tree.add(3);
+tree.add(4);
+tree.add(5);
 tree.add(6);
-tree.add(7);
-tree.add(8);
+
+
