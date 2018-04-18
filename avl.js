@@ -77,58 +77,26 @@ AvlTree.prototype.findMax = function(value) {
 };
 
 AvlTree.prototype.delete = function(value) {
-  var nodeToRemove = this.findNode(this.rootNode, value);
-  var parent = this.findParent(this.rootNode, value);
+    let nodeToRemove = this.rootNode
+    let parent
+    let stackPath = [this.rootNode]
+    while(nodeToRemove && nodeToRemove.value == value) {
+      parent = nodeToRemove
+      if(value < nodeToRemove.value){
+        nodeToRemove = nodeToRemove.leftSubTree
+      } else {
+        nodeToRemove = nodeToRemove.rightSubTree;       
+      }
+      stackPath.push(nodeToRemove)
+    }
+    if(!nodeToRemove) {
+      return false
+    }
+    parent = this.findParent(value)
+    if(this.length == 1) {
+      this.rootNode = null
+    } //24
 
-  if (!nodeToRemove) {
-    return false;
-  }
-
-  if (this.length == 1) {
-    delete this.rootNode;
-    this.length--;
-    return true;
-  } else if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
-    if (nodeToRemove.value < parent.value) {
-      delete parent.leftSubTree;
-    } else {
-      delete parent.rightSubTree;
-    }
-  } else if (!nodeToRemove.leftSubTree && nodeToRemove.rightSubTree) {
-    if (nodeToRemove.value < parent.value) {
-      parent.leftSubTree = nodeToRemove.rightSubTree;
-    } else {
-      parent.rightSubTree = nodeToRemove.rightSubTree;
-    }
-  } else if (nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
-    if (nodeToRemove.value < parent.value) {
-      parent.leftSubTree = nodeToRemove.leftSubTree;
-    } else {
-      parent.rightSubTree = nodeToRemove.leftSubTree;
-    }
-  } else {
-    var largestValue = nodeToRemove.leftSubTree;
-    while (largestValue.rightSubTree) {
-      largestValue = largestValue.rightSubTree;
-    }
-    if (largestValue == nodeToRemove.leftSubTree) {
-      nodeToRemove.leftSubTree = largestValue.leftSubTree;
-    } else {
-      this.findParent(this.rootNode, largestValue.value).rightSubTree = null;
-    }
-
-    nodeToRemove.value = largestValue.value;
-  }
-  this.length--;
-  return true;
-};
-
-AvlTree.prototype.preorder = function(root, callback) {
-  if (root) {
-    callback(root);
-    this.preoder(root.leftSubTree, callback);
-    this.preoder(root.rightSubTree, callback);
-  }
 };
 
 AvlTree.prototype.postorder = function(root, callback) {
@@ -274,5 +242,6 @@ tree.add(3);
 tree.add(4);
 tree.add(5);
 tree.add(6);
+tree.add(7);
 
 
