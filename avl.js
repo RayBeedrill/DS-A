@@ -76,28 +76,7 @@ AvlTree.prototype.findMax = function(value) {
   this.findMax(root.rightSubTree);
 };
 
-AvlTree.prototype.delete = function(value) {
-    let nodeToRemove = this.rootNode
-    let parent
-    let stackPath = [this.rootNode]
-    while(nodeToRemove && nodeToRemove.value == value) {
-      parent = nodeToRemove
-      if(value < nodeToRemove.value){
-        nodeToRemove = nodeToRemove.leftSubTree
-      } else {
-        nodeToRemove = nodeToRemove.rightSubTree;       
-      }
-      stackPath.push(nodeToRemove)
-    }
-    if(!nodeToRemove) {
-      return false
-    }
-    parent = this.findParent(value)
-    if(this.length == 1) {
-      this.rootNode = null
-    } //24
 
-};
 
 AvlTree.prototype.postorder = function(root, callback) {
   if (root) {
@@ -223,7 +202,62 @@ AvlTree.prototype.add = function (value) {
 };
 
 
+AvlTree.prototype.delete = function (value) {
+  let nodeToRemove = this.rootNode
+  let parent
+  let stackPath = [this.rootNode]
+  while (nodeToRemove && nodeToRemove.value != value) {
+    parent = nodeToRemove
+    if (value < nodeToRemove.value) {
+      nodeToRemove = nodeToRemove.leftSubTree
+    } else {
+      nodeToRemove = nodeToRemove.rightSubTree;
+    }
+    stackPath.push(nodeToRemove)
+  }
+  if (!nodeToRemove) {
+    return false
+  }
+  parent = this.findParent(value)
+  if (this.length == 1) {
+    this.rootNode = null
+  } else if (!nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
+    if (nodeToRemove.value < parent.value) {
+      parent.leftSubTree = null
+    } else {
+      parent.rightSubTree = null
+    }
+  } else if (!nodeToRemove.leftSubTree && nodeToRemove.rightSubTree) {
+    if (nodeToRemove.value < parent.value) {
+      parent.leftSubTree = nodeToRemove.rightSubTree
+    } else {
+      parernt.rightSubTree = nodeToRemove.rightSubTree
+    }
+  } else if (nodeToRemove.leftSubTree && !nodeToRemove.rightSubTree) {
+    if (nodeToRemove.value < parent.value) {
+      parent.leftSubTree = nodeToRemove.leftSubTree
+    } else {
+      parernt.rightSubTree = nodeToRemove.leftSubTree
+    }
+  } else {
+    var largestValue = nodeToRemove.leftSubTree
+    while (largestValue.rightSubTree) {
+      largestValue = largestValue.rightSubTree
+    }
+    if (largestValue == nodeToRemove.leftSubTree) {
+      nodeToRemove.leftSubTree = largestValue.leftSubTree
+    } else {
+      this.findParent(this.rootNode, largestValue.value).rightSubTree = null
+    }
 
+    nodeToRemove.value = largestValue.value
+  }
+  while (stackPath.length > 0) {
+    this.balanceCheck(stackPath.pop())
+  }
+  this.length--
+  return true
+};
 
 
 var tree = new AvlTree();
